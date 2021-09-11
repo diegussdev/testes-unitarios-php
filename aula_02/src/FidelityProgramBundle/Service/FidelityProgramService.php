@@ -17,8 +17,7 @@ class FidelityProgramService
         PointsRepositoryInterface $pointsRepository,
         PointsCalculator $pointsCalculator,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->pointsRepository = $pointsRepository;
         $this->pointsCalculator = $pointsCalculator;
         $this->logger = $logger;
