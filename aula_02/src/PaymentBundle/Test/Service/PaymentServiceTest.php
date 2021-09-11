@@ -77,4 +77,9 @@ class PaymentServiceTest extends TestCase
             $this->creditCard
         );
     }
+
+    public function tearDown()
+    {
+        unset($this->gateway);
+    }
 }
