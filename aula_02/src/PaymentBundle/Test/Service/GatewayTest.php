@@ -27,22 +27,10 @@ class GatewayTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $gateway = new Gateway($httpClient, $logger, $user, $password);
 
-        $map = [
-            [
-                'POST',
-                Gateway::BASE_URL . '/authenticate',
-                [
-                    'user' => $user,
-                    'password' => $password,
-                ],
-                $responseToken,
-            ],
-        ];
-
         $httpClient
-            ->expects($this->once())
+            ->expects($this->at(0))
             ->method('send')
-            ->will($this->returnValueMap($map));
+            ->willReturn($responseToken);
 
         $paid = $gateway->pay(
             $name,
@@ -72,34 +60,15 @@ class GatewayTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $gateway = new Gateway($httpClient, $logger, $user, $password);
 
-        $map = [
-            [
-                'POST',
-                Gateway::BASE_URL . '/authenticate',
-                [
-                    'user' => $user,
-                    'password' => $password,
-                ],
-                $responseToken,
-            ],
-            [
-                'POST',
-                Gateway::BASE_URL . '/pay',
-                [
-                    'name' => $name,
-                    'credit_card_number' => $creditCard,
-                    'validity' => $validity,
-                    'value' => $value,
-                    'token' => $responseToken,
-                ],
-                ['paid' => false],
-            ],
-        ];
+        $httpClient
+            ->expects($this->at(0))
+            ->method('send')
+            ->willReturn($responseToken);
 
         $httpClient
-            ->expects($this->atLeast(2))
+            ->expects($this->at(1))
             ->method('send')
-            ->will($this->returnValueMap($map));
+            ->willReturn(['paid' => false]);
 
         $paid = $gateway->pay(
             $name,
@@ -129,34 +98,15 @@ class GatewayTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $gateway = new Gateway($httpClient, $logger, $user, $password);
 
-        $map = [
-            [
-                'POST',
-                Gateway::BASE_URL . '/authenticate',
-                [
-                    'user' => $user,
-                    'password' => $password,
-                ],
-                $responseToken,
-            ],
-            [
-                'POST',
-                Gateway::BASE_URL . '/pay',
-                [
-                    'name' => $name,
-                    'credit_card_number' => $creditCard,
-                    'validity' => $validity,
-                    'value' => $value,
-                    'token' => $responseToken,
-                ],
-                ['paid' => true],
-            ],
-        ];
+        $httpClient
+            ->expects($this->at(0))
+            ->method('send')
+            ->willReturn($responseToken);
 
         $httpClient
-            ->expects($this->atLeast(2))
+            ->expects($this->at(1))
             ->method('send')
-            ->will($this->returnValueMap($map));
+            ->willReturn(['paid' => true]);
 
         $paid = $gateway->pay(
             $name,
