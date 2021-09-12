@@ -18,6 +18,6 @@ class CustomerCategoryServiceTest extends TestCase
         $customer = new Customer();
         $usageCategory = $customerCategoryService->getUsageCategory($customer);
 
-        $this->assertEquals('new-user', $usageCategory);
+        $this->assertEquals(CustomerCategoryService::CATEGORY_NEW_USER, $usageCategory);
     }
 }
